@@ -5,7 +5,7 @@
 
 __updated__ = '10.07.2015'
 
-from numpy import alltrue, argmax, mean
+from numpy import alltrue, argmax, mean, amax, amin
 from sklearn.metrics import auc
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import precision_recall_fscore_support
@@ -29,6 +29,9 @@ class ScoringDict(dict):
              'rocauc',      # area under the receiver operator characteristic.
              'accuracy',
              'threshold',   # F1 optimal threshold.
+             'support',
+             'amin',
+             'amax',
              ]
     _fmt = '{:12}' * len(_keys)
 
@@ -119,6 +122,9 @@ class ScoringDict(dict):
             average='binary')
         self['accuracy'] = mean(predictions == labels)
 
+        self['amin'] = amin(predictions)
+        self['amax'] = amax(predictions)
+
 
 def compute_dice_opt_threshold(precision, recall):
     '''Computes the F1 optimal operating point.
@@ -130,3 +136,9 @@ def compute_dice_opt_threshold(precision, recall):
     dice = 2 * (precision * recall) / (precision + recall)
     ind = argmax(dice)
     return ind, dice[ind]
+
+def main():
+    pass
+
+if __name__ == '__main__':
+    main()
